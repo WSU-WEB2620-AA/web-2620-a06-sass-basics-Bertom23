@@ -1,21 +1,44 @@
-// Your styles go here
+@use'_nav.scss';
+
+// 1. Color Variables
+$primary-color: #0d6efd;
+$dark-bg-color: #202020;
+$light-bg-color: #fff;
+$border-color: #ddd;
+$footer-text-color: rgba(255, 255, 255, .4);
+
+// 2. Spacing Variables
+$spacing-small: 0.5em;
+$spacing-medium: 1.5em;
+$spacing-large: 2em;
+
+// 3. Font Variables
+$font-family: 'Roboto Condensed', sans-serif;
+$font-weight-light: 300;
+$font-size-default: 11pt;
+
+// Mixin for creating a column with a given width
+@mixin make-column($width) {
+  width: $width;
+}
+
+
+// Body Styles - Background, Font, and Margin
 body {
-  background: #202020 url('/images/footer-bg.jpg') repeat;
+  background: $dark-bg-color url('/images/footer-bg.jpg') repeat;
   min-width: 1200px;
   margin: 0;
   padding: 0;
+
+  &, input, textarea, select {
+    font-family: $font-family;
+    font-weight: $font-weight-light;
+    font-size: $font-size-default;
+    line-height: 1.75em;
+  }
 }
 
-body,
-input,
-textarea,
-select {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-weight: 300;
-  font-size: 11pt;
-  line-height: 1.75em;
-}
-
+// Heading Styles - Apply uppercase and letter spacing
 h1,
 h2,
 h3,
@@ -24,19 +47,15 @@ h5,
 h6 {
   letter-spacing: 1px;
   text-transform: uppercase;
-  font-weight: 300;
+  font-weight: $font-weight-light;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
-h1 a,
-h2 a,
-h3 a,
-h4 a,
-h5 a,
-h6 a {
-  color: inherit;
-  text-decoration: none;
-}
-
+// Text Elements - Styling for strong and bold text
 strong,
 b {
   font-weight: bold;
@@ -48,10 +67,12 @@ i {
   font-style: italic;
 }
 
+// Anchor link styles
 a {
-  color: #0d6efd;
+  color: $primary-color;
 }
 
+// Subscript and Superscript Styles - Adjust position and font-size
 sub {
   position: relative;
   top: 0.5em;
@@ -64,51 +85,54 @@ sup {
   font-size: 0.8em;
 }
 
+// Horizontal Rule - Style for dividing lines
 hr {
   border: 0;
-  border-top: solid 1px #ddd;
+  border-top: solid 1px $border-color;
 }
 
+// General Element Styles - Spacing for text-related elements
 p,
 ul,
 ol,
 dl,
 table {
-  margin-bottom: 1em;
+  margin-bottom: $spacing-medium;
 }
 
+// Header Styles - Styles for header section
 header {
-  margin-bottom: 2em;
+  margin-bottom: $spacing-large;
   line-height: 1.7em;
+
+  h2 {
+    font-size: 2.5em;
+  }
+
+  .byline {
+    display: block;
+    margin: $spacing-small 0 0 0;
+    padding: 0 0 $spacing-small 0;
+    text-transform: uppercase;
+    font-size: 1.4em;
+  }
 }
 
-header h2 {
-  font-size: 2.5em;
-}
-
-header .byline {
-  display: block;
-  margin: 0.5em 0 0 0;
-  padding: 0 0 0.5em 0;
-  text-transform: uppercase;
-  font-size: 1.4em;
-}
-
+// Section and Article Styles - Margin adjustments
 section,
 article {
   margin-bottom: 3em;
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
-section > :last-child,
-article > :last-child {
-  margin-bottom: 0;
-}
-
-section:last-child,
-article:last-child {
-  margin-bottom: 0;
-}
-
+// Blockquote - Reset margin and padding for blockquotes
 blockquote {
   margin: 0;
   padding: 0;
@@ -116,62 +140,61 @@ blockquote {
   font-style: normal;
 }
 
+// Footer Styles - Footer section margin
 footer {
-  margin-top: 1em;
+  margin-top: $spacing-small;
+  color: $footer-text-color;
 }
 
-.container {
-  width: 1200px;
+// Container and Row - Control layout and responsiveness
+.container,
+.row {
   margin-left: auto;
   margin-right: auto;
+
+  &.small {
+    width: 900px;
+  }
+
+  &.big {
+    width: 100%;
+    max-width: 1500px;
+    min-width: 1200px;
+  }
+
+  section,
+  article {
+    margin-bottom: 0;
+  }
+
+  [class*='column-'] {
+    padding: $spacing-large 0 0 $spacing-large;
+    float: left;
+    box-sizing: border-box;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+    height: 0;
+  }
 }
 
-.container.small {
-  width: 900px;
-}
-
-.container.big {
-  width: 100%;
-  max-width: 1500px;
-  min-width: 1200px;
-}
-
-.row section,
-.row article {
-  margin-bottom: 0;
-}
-
-.row [class*='column-'] {
-  padding: 50px 0 0 50px;
-  float: left;
-  box-sizing: border-box;
-}
-
+// Row Styles - Specific margin adjustment for row
 .row {
   margin-left: -50px;
 }
 
-.row:after {
-  content: '';
-  display: block;
-  clear: both;
-  height: 0;
+
+// Column Layout - Dynamically generated column widths
+@for $i from 1 through 12 {
+  .column-#{$i} {
+    width: (100 / 12) * $i + '%';
+  }
 }
 
-.column-1,
-.column-2,
-.column-3,
-.column-4,
-.column-5,
-.column-6,
-.column-7.column-8,
-.column-9,
-.column-10,
-.column-11,
-.column-12 {
-  width: 100%;
-}
-
+// Media Queries - Responsive Design for Columns
 @media all and (min-width: 576px) {
   .column-1 {
     width: 8.33333%;
@@ -194,7 +217,7 @@ footer {
   }
 
   .column-6 {
-    width: 50%;
+    @include make-column(50%);
   }
 
   .column-7 {
@@ -222,287 +245,187 @@ footer {
   }
 }
 
+// Image Styles - Ensuring responsive and featured images
 .image {
   display: inline-block;
+
+  & img {
+    display: block;
+    width: 100%;
+  }
+
+  &.featured {
+    display: block;
+    width: 100%;
+    margin: 0 0 $spacing-medium 0;
+  }
+
+  &.full {
+    display: block;
+    width: 100%;
+    margin-bottom: $spacing-medium;
+  }
+
+  &.left {
+    float: left;
+    margin: 0 2em $spacing-medium 0;
+  }
+
+  &.centered {
+    display: block;
+    margin: 0 0 $spacing-medium 0;
+
+    & img {
+      margin: 0 auto;
+      width: auto;
+    }
+  }
 }
 
-.image img {
-  display: block;
-  width: 100%;
-}
-
-.image.featured {
-  display: block;
-  width: 100%;
-  margin: 0 0 2em 0;
-}
-
-.image.full {
-  display: block;
-  width: 100%;
-  margin-bottom: 2em;
-}
-
-.image.left {
-  float: left;
-  margin: 0 2em 2em 0;
-}
-
-.image.centered {
-  display: block;
-  margin: 0 0 2em 0;
-}
-
-.image.centered img {
-  margin: 0 auto;
-  width: auto;
-}
-
-ul.default {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-ul.default li {
-  display: block;
-  padding: 2em 0em 1.25em 0em;
-  border-top: 1px solid #303030;
-}
-
-ul.default li:first-child {
-  padding-top: 0em;
-  border-top: none;
-}
-
-ul.default a {
-  text-decoration: none;
-  color: rgba(255, 255, 255, .5);
-}
-
-ul.default a:hover {
-  text-decoration: underline;
-}
-
-ul.style1 {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-ul.style1 li {
-  padding: 0.60em 0em;
-  border-top: 1px solid;
-  border-color: rgba(0, 0, 0, .1);
-}
-
-ul.style1 li:first-child {
-  padding-top: 0;
-  border-top: 0;
-}
-
-ul.style2 {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-ul.style2 li {
-  padding: 1.90em 0em 1.60em 0em;
-  border-top: 1px solid;
-  border-color: rgba(0, 0, 0, .1);
-}
-
-ul.style2 li:first-child {
-  padding-top: 0;
-  border-top: 0;
-}
-
-ul.style2 img {
-  float: left;
-  padding-right: 1em;
-}
-
-ul.style5 {
-  overflow: hidden;
-  margin: 0em 0em 1em 0em;
-  padding: 0em;
-  list-style: none;
-}
-
-ul.style5 li {
-  float: left;
-  padding: 0.25em 0.25em;
-  line-height: 0;
-}
-
+// Button Styling - Style for buttons
 .button {
   position: relative;
   display: inline-block;
-  margin-top: 0.5em;
+  margin-top: $spacing-small;
   padding: 0.50em 1.5em;
-  background: #0d6efd;
+  background: $primary-color;
   border-radius: 6px;
   text-decoration: none;
   text-transform: uppercase;
   font-size: 1.1em;
-  color: #FFF;
+  color: $light-bg-color;
   transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
   cursor: pointer;
+
+  &:hover {
+    background: $primary-color;
+    color: $light-bg-color !important;
+  }
 }
 
-.button:hover {
-  background: #0d6efd;
-  color: #FFF !important;
-}
-
+// Header - Position and background settings for header
 .header {
   position: relative;
-  background: #FFF;
-}
+  background: $light-bg-color;
 
-.header .container {
-  position: relative;
-  padding: 4em 0em;
+  .container {
+    position: relative;
+    padding: $spacing-large 0;
+  }
 }
 
 .logo {
   position: absolute;
   left: 0em;
-  top: 3em;
+  top: 1em;
+  z-index: 10; // Ensure the logo appears in front of other elements
+
+  a {
+    display: block;
+    text-decoration: none;
+    font-size: 2.8em;
+    font-weight: 600;
+  }
 }
 
-.logo a {
-  display: block;
-  text-decoration: none;
-  font-size: 2.8em;
-  font-weight: 600;
-}
-
-.nav {
-  position: absolute;
-  right: 0em;
-  top: 2.2em;
-}
-
-.nav ul {
-  list-style-type: none;
-}
-
-.nav ul li {
-  float: left;
-}
-
-.nav ul li:last-child {
-  padding-right: 0;
-}
-
-.nav ul li a,
-.nav ul li span {
-  display: block;
-  margin-left: 0.7em;
-  padding: 0.80em 1.2em;
-  letter-spacing: 0.06em;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 1.1em;
-  outline: 0;
-  color: #333;
-}
-
-.nav li.active a {
-  background: #0d6efd;
-  border-radius: 5px;
-  color: #FFF;
-}
-
+// Banner Styles - Background and padding for the banner section
 .banner {
   position: relative;
   padding: 12em 0em;
   background: url('/images/banner.jpg') no-repeat center;
   background-size: cover;
-  color: #fff;
+  color: $light-bg-color;
 }
 
+// Page Styles - General page background style
 .page {
   position: relative;
-  background: #fff;
+  background: $light-bg-color;
 }
 
+// Main Content - Styling for main content area
 .main {
   border-top: 1px solid;
   border-color: rgba(0, 0, 0, .2);
 }
 
+// Sidebar Styles - Sidebar header font size
 .sidebar header h2 {
   font-size: 1.6em;
 }
 
+// Footer Styling - Footer general styling
 .footer {
   position: relative;
-  color: rgba(255, 255, 255, .4);
+  color: $footer-text-color;
+
+  h2 {
+    padding-bottom: $spacing-medium;
+    font-size: 1.6em;
+    color: $light-bg-color;
+  }
+
+  strong {
+    color: rgba(255, 255, 255, .7);
+  }
 }
 
-.footer h2 {
-  padding-bottom: 1.5em;
-  font-size: 1.6em;
-  color: #FFF;
-}
-
-.footer strong {
-  color: rgba(255, 255, 255, .7);
-}
-
+// Copyright Styles - Styling for copyright section
 .copyright {
   position: relative;
-  padding: 3em 0em;
-  border-top: 1px solid #303030;
+  padding: $spacing-large 0;
+  border-top: 1px solid $border-color;
   letter-spacing: 1px;
   text-align: center;
-  color: rgba(255, 255, 255, .4);
+  color: $footer-text-color;
+
+  a {
+    text-decoration: none;
+    color: $footer-text-color !important;
+  }
 }
 
-.copyright a {
-  text-decoration: none;
-  color: rgba(255, 255, 255, .4) !important;
-}
-
+// Marketing Section - Styling for marketing header
 .marketing {
   position: relative;
+
+  header {
+    h2 {
+      font-size: 1.6em;
+    }
+  }
 }
 
-.marketing header h2 {
-  font-size: 1.6em;
-}
-
+// Featured Content - Box styling for featured items
 .featured {
   position: relative;
+
+  .divider {
+    border-bottom: 1px solid $border-color;
+  }
+
+  .box {
+    background: $light-bg-color;
+    padding: $spacing-medium;
+    font-size: 0.95em;
+    border-radius: 5px;
+  }
 }
 
-.featured .divider {
-  border-bottom: 1px solid #303030;
-}
-
-.featured .box {
-  background: #FFF;
-  padding: 1.4em;
-  font-size: 0.95em;
-  border-radius: 5px;
-}
-
+// Balloon Element - Background and padding for balloon component
 .balloon {
-  padding: 1.87em;
+  padding: $spacing-medium;
   background: url('/images/balloon-bg.jpg') repeat left top;
   border-radius: 5px;
   line-height: 180%;
   font-size: 1.2em;
   color: #333;
-}
 
-.ballon-bgbtm {
-  height: 1.87em;
-}
+  strong {
+    color: #333 !important;
+  }
 
-.balloon strong {
-  color: #333 !important;
+  .balloon-bgbtm {
+    height: $spacing-medium;
+  }
 }

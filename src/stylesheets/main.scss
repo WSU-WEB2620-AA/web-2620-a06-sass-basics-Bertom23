@@ -151,6 +151,8 @@ footer {
 .row {
   margin-left: auto;
   margin-right: auto;
+  padding: 0 2em; // Add horizontal padding
+
 
   &.small {
     width: 900px;
@@ -183,7 +185,13 @@ footer {
 
 // Row Styles - Specific margin adjustment for row
 .row {
-  margin-left: -50px;
+  margin-left: 0px;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
 }
 
 
